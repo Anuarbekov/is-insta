@@ -37,67 +37,8 @@ const Index = () => {
     }
   };
   const handleUpload = async () => {
-    if (images.length >= 1) {
-      const headers = {
-        "Content-Type": "application/json",
-      };
-      axios.post(`api/add-resol/${collection_name}`, {resolution: resolution}, headers);
-      images.map(async (image) => {
-        initializeApp(firebaseConfig);
-        const name = image.name;
-        const storage = getStorage();
-        const storageRef = ref(storage, `images/${name}`);
-        const uploadTask = uploadBytesResumable(storageRef, image);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {},
-          (error) => {
-            console.log(error);
-          },  
-          async () => {
-            await getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                const data = {
-                  name: name,
-                  url: downloadURL,
-                };
-                await axios.post(`api/add/${collection_name}`, data, headers);
-              }
-            );
-          }
-        );
-      });
-      toast.loading("Uploading...", {
-        position: "top-right",
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: customId,
-      });
-      function closeToast() {
-        toast.dismiss();
-      }
-      setTimeout(closeToast, 5800);
-      setTimeout(() => {
-        toast.success("Photos uploaded, URL copied!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        });
-        setTimeout(() => {
-          navigator.clipboard.writeText(
-            "https://is-insta.vercel.app/photos/" + collection_name
-          );
-        }, 200);
-      }, 6000);
-    } else {
-      toast.warn("Upload at least one image !", {
+    if (resolution.length < 2) {
+      toast.warn("Choose resolution please !", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -107,6 +48,82 @@ const Index = () => {
         progress: undefined,
         toastId: customId,
       });
+    } else {
+      if (images.length >= 1) {
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        axios.post(
+          `api/add-resol/${collection_name}`,
+          { resolution: resolution },
+          headers
+        );
+        images.map(async (image) => {
+          initializeApp(firebaseConfig);
+          const name = image.name;
+          const storage = getStorage();
+          const storageRef = ref(storage, `images/${name}`);
+          const uploadTask = uploadBytesResumable(storageRef, image);
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (error) => {
+              console.log(error);
+            },
+            async () => {
+              await getDownloadURL(uploadTask.snapshot.ref).then(
+                async (downloadURL) => {
+                  const data = {
+                    name: name,
+                    url: downloadURL,
+                  };
+                  await axios.post(`api/add/${collection_name}`, data, headers);
+                }
+              );
+            }
+          );
+        });
+        toast.loading("Uploading...", {
+          position: "top-right",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          toastId: customId,
+        });
+        function closeToast() {
+          toast.dismiss();
+        }
+        setTimeout(closeToast, 5800);
+        setTimeout(() => {
+          toast.success("Photos uploaded, URL copied!", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+          setTimeout(() => {
+            navigator.clipboard.writeText(
+              "https://is-insta.vercel.app/photos/" + collection_name
+            );
+          }, 200);
+        }, 6000);
+      } else {
+        toast.warn("Upload at least one image !", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          toastId: customId,
+        });
+      }
     }
   };
 
