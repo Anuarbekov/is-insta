@@ -4,7 +4,6 @@ import axios from "axios";
 import { firebaseConfig } from "../utils/connectFirebase";
 import { DropzoneArea } from "material-ui-dropzone";
 import Head from "next/head";
-import useClipboard from "react-use-clipboard";
 import {
   getStorage,
   ref,
@@ -13,7 +12,6 @@ import {
 } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import Description from "../components/Description";
-import UrlCard from "../components/UrlCard";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -28,11 +26,7 @@ const Index = () => {
   });
   const { resolution, handleSizeChange } = GetContextSize();
   const [images, setImages] = useState([]);
-  const [urlToFriends, setUrlToFriends] = useState("");
-  const [urlAnim, seturlAnim] = useState("Url to share will be here");
-  const [isUrlExist, setIsUrlExist] = useState(false);
   const collection_name = uuidv4();
-  const [isCopied, setCopied] = useClipboard(urlToFriends);
   const customId = "custom-id-yes";
   const handleChange = (uploadFiles) => {
     if (uploadFiles) {
@@ -44,6 +38,10 @@ const Index = () => {
   };
   const handleUpload = async () => {
     if (images.length >= 1) {
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      axios.post(`api/add-resol/${collection_name}`, {resolution: resolution}, headers);
       images.map(async (image) => {
         initializeApp(firebaseConfig);
         const name = image.name;
@@ -55,11 +53,8 @@ const Index = () => {
           (snapshot) => {},
           (error) => {
             console.log(error);
-          },
+          },  
           async () => {
-            const headers = {
-              "Content-Type": "application/json",
-            };
             await getDownloadURL(uploadTask.snapshot.ref).then(
               async (downloadURL) => {
                 const data = {
@@ -84,9 +79,9 @@ const Index = () => {
       function closeToast() {
         toast.dismiss();
       }
-      setTimeout(closeToast, 4600);
-      function uploadedToast() {
-        toast.success("Photos uploaded, copy the URL!", {
+      setTimeout(closeToast, 5200);
+      setTimeout(() => {
+        toast.success("Photos uploaded, URL copied!", {
           position: "top-right",
           autoClose: 2500,
           hideProgressBar: true,
@@ -95,9 +90,12 @@ const Index = () => {
           draggable: false,
           progress: undefined,
         });
-      }
-      setTimeout(uploadedToast, 4800);
-      setTimeout(setUrlToSend, 5500);
+        setTimeout(() => {
+          navigator.clipboard.writeText(
+            "https://is-insta.vercel.app/photos/" + collection_name
+          );
+        }, 200);
+      }, 5500);
     } else {
       toast.warn("Upload at least one image !", {
         position: "top-right",
@@ -111,38 +109,7 @@ const Index = () => {
       });
     }
   };
-  const setUrlToSend = () => {
-    setUrlToFriends("https://is-insta.vercel.app/photos/" + collection_name);
-    seturlAnim("Click here to copy URL.");
-    setIsUrlExist(true);
-  };
-  const copyUrl = (e, callback) => {
-    e.preventDefault();
-    if (isUrlExist) {
-      toast.success("Copied to clipboard!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: customId,
-      });
-      callback();
-    } else {
-      toast.warn("Upload at least one image!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        toastId: customId,
-      });
-    }
-  };
+
   return (
     <>
       <Head>
@@ -165,14 +132,14 @@ const Index = () => {
           <DropzoneArea
             dropzoneParagraphClass="dropzone-text"
             dropzoneClass="dropzone"
-            dropzoneText={"Drag and drop images here or click"}
+            dropzoneText={"Drag images here or click"}
             onChange={handleChange}
             filesLimit={15}
             showPreviews={false}
             maxFileSize={10000000}
             showPreviewsInDropzone={false}
           />
-
+          <h4>Choose resolution:</h4>
           <Box sx={{ marginTop: "1.4em" }}>
             <FormControl fullWidth>
               <Select
@@ -188,16 +155,8 @@ const Index = () => {
             </FormControl>
           </Box>
           <button onClick={handleUpload} className="upload-button">
-            Upload
+            Get a link
           </button>
-        </div>
-        <div
-          className="url-zone"
-          onClick={(e) => {
-            copyUrl(e, setCopied);
-          }}
-        >
-          <UrlCard urlToFriend={urlAnim} isUrlExist={isUrlExist} />
         </div>
       </div>
     </>

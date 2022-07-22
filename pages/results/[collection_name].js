@@ -6,11 +6,10 @@ import TinderCard from "react-tinder-card";
 import Head from "next/head";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const Results = ({ response }) => {
+const Results = ({ response, resolution }) => {
   const router = useRouter();
   const { collection_name } = router.query;
   const [results, setResults] = useState([]);
-  let resolution;
   useEffect(() => {
     toast.loading("Getting reactions...", {
       position: "top-right",
@@ -25,7 +24,6 @@ const Results = ({ response }) => {
     }
     setTimeout(closeToast, 2000);
     if (collection_name) {
-      resolution = localStorage.getItem("resolution");
       if (response.length === 1) {
         document.body.style.height = "100vh";
       }
@@ -82,12 +80,15 @@ const Results = ({ response }) => {
     </>
   );
 };
+
 export async function getServerSideProps(context) {
   const { collection_name } = context.query;
   const res = await axios.get(
     `https://is-insta.vercel.app/api/all/${collection_name}`
   );
   const response = await res.data;
-  return { props: { response } };
+  const resol = await axios.get(`https://is-insta.vercel.app/api/get-res/${collection_name}`)
+  const resolution = resol.data.resolution;
+  return { props: { response, resolution } };
 }
 export default Results;
