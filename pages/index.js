@@ -97,20 +97,22 @@ const Index = () => {
         }
         setTimeout(closeToast, 5800);
         setTimeout(() => {
-          toast.success("Photos uploaded, URL copied!", {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-          });
-          setTimeout(() => {
-            navigator.clipboard.writeText(
-              "https://is-insta.vercel.app/photos/" + collection_name
-            );
-          }, 200);
+          navigator.clipboard
+            .writeText("https://is-insta.vercel.app/photos/" + collection_name)
+            .then(function () {
+              toast.success("Photos uploaded, URL copied!", {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+              });
+            })
+            .catch(() => {
+              alert("Something gone wrong");
+            });
         }, 6000);
       } else {
         toast.warn("Upload at least one image !", {
