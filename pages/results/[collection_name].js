@@ -26,6 +26,9 @@ const Results = ({ response }) => {
     setTimeout(closeToast, 2000);
     if (collection_name) {
       resolution = localStorage.getItem("resolution");
+      if (response.length === 1) {
+        document.body.style.height = "100vh";
+      }
       response.map(async (image) => {
         await axios
           .post(
