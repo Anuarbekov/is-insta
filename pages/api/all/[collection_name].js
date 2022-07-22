@@ -1,6 +1,6 @@
 import client from "../../../utils/connectToMongoDB";
 export default async function getImages(req, res) {
-  res.setHeader('Cache-Control', 's-maxage=10'); 
+  res.setHeader("Cache-Control", "s-maxage=10");
   try {
     const code = req.query;
     client.connect((err) => {
@@ -9,7 +9,9 @@ export default async function getImages(req, res) {
         if (err) {
           res.status(500).json({ err });
         } else {
-          res.status(200).json(result);
+
+          const newArr = result.slice(1)
+          res.status(200).json(newArr);
         }
       });
     });
