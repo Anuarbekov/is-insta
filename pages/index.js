@@ -79,7 +79,7 @@ const Index = () => {
       function closeToast() {
         toast.dismiss();
       }
-      setTimeout(closeToast, 5200);
+      setTimeout(closeToast, 5800);
       setTimeout(() => {
         toast.success("Photos uploaded, URL copied!", {
           position: "top-right",
@@ -95,7 +95,7 @@ const Index = () => {
             "https://is-insta.vercel.app/photos/" + collection_name
           );
         }, 200);
-      }, 5500);
+      }, 6000);
     } else {
       toast.warn("Upload at least one image !", {
         position: "top-right",
