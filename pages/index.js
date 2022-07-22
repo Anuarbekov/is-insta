@@ -112,7 +112,7 @@ const Index = () => {
     }
   };
   const setUrlToSend = () => {
-    setUrlToFriends("/photos/" + collection_name);
+    setUrlToFriends("https://is-insta.vercel.app/photos/" + collection_name);
     seturlAnim("Click here to copy URL.");
     setIsUrlExist(true);
   };
