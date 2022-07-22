@@ -49,6 +49,7 @@ const Results = ({ response }) => {
         <script
           src="https://kit.fontawesome.com/e35f419637.js"
           crossOrigin="anonymous"
+          async
         ></script>
       </Head>
       <div className="main">
@@ -60,6 +61,7 @@ const Results = ({ response }) => {
               preventSwipe={["up", "down", "left", "right"]}
             >
               <img
+                alt=""
                 className={`image-slider-${
                   resolution === "square" ? "square" : "vertical"
                 }`}

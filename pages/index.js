@@ -18,7 +18,7 @@ import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { getContextSize } from "../components/ContextSize";
+import { GetContextSize } from "../components/ContextSize";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Index = () => {
@@ -26,7 +26,7 @@ const Index = () => {
     document.body.style.overflow = "hidden";
     document.body.style.height = "100vh";
   });
-  const { resolution, handleSizeChange } = getContextSize();
+  const { resolution, handleSizeChange } = GetContextSize();
   const [images, setImages] = useState([]);
   const [urlToFriends, setUrlToFriends] = useState("");
   const [urlAnim, seturlAnim] = useState("Url to share will be here");
@@ -150,6 +150,7 @@ const Index = () => {
         <script
           src="https://kit.fontawesome.com/e35f419637.js"
           crossOrigin="anonymous"
+          async
         ></script>
       </Head>
       <div className="body">

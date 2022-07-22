@@ -22,7 +22,7 @@ const TinderCards = ({ urls, collection_name, resolution }) => {
           preventSwipe={["up", "down"]}
           className="swipe"
         >
-          <img className={`image-slider-${resolution === "square" ? "square" : "vertical"}`} src={url}></img>
+          <img alt="" className={`image-slider-${resolution === "square" ? "square" : "vertical"}`} src={url}></img>
         </TinderCard>
       ))}
     </>

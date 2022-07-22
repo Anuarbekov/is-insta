@@ -30,6 +30,7 @@ const Photos = ({ response }) => {
           target="_blank"
           href={`https://is-insta.vercel.app/results/${collection_name}`}
           className="photos-text"
+          rel="noreferrer"
         >
           Results
         </a>

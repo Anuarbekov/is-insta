@@ -17,6 +17,6 @@ export function SizeWrapper({ children }) {
     </ContextSize.Provider>
   );
 }
-export function getContextSize (){
+export function GetContextSize (){
     return useContext(ContextSize)
 }
