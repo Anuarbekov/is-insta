@@ -58,7 +58,7 @@ const Index = () => {
           { resolution: resolution },
           headers
         );
-        images.map(async (image) => {
+        await images.map(async (image) => {
           initializeApp(firebaseConfig);
           const name = image.name;
           const storage = getStorage();
@@ -92,28 +92,31 @@ const Index = () => {
           progress: undefined,
           toastId: customId,
         });
-        function closeToast() {
+        async function closeToast() {
           toast.dismiss();
         }
-        setTimeout(closeToast, 5800);
         setTimeout(() => {
-          navigator.clipboard
-            .writeText("https://is-insta.vercel.app/photos/" + collection_name)
-            .then(function () {
-              toast.success("Photos uploaded, URL copied!", {
-                position: "top-right",
-                autoClose: 2500,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: false,
-                progress: undefined,
-              });
-            })
-            .catch(() => {
-              alert("Something gone wrong");
-            });
-        }, 6000);
+          closeToast().then(
+            navigator.clipboard
+              .writeText(
+                "https://is-insta.vercel.app/photos/" + collection_name
+              )
+              .then(function () {
+                toast.success("URL copied to your clipboard!", {
+                  position: "top-right",
+                  autoClose: 2500,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: false,
+                  progress: undefined,
+                });
+              })
+              .catch(() => {
+                alert("Something gone wrong");
+              })
+          );
+        }, 9000);
       } else {
         toast.warn("Upload at least one image !", {
           position: "top-right",
