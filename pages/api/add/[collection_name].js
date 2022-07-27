@@ -1,7 +1,6 @@
 import client from "../../../utils/connectToMongoDB";
 
 export default async function addPhotoUrl(req, res) {
-  res.setHeader('Cache-Control', 's-maxage=10'); 
   const { name, url } = req.body;
   const { collection_name } = req.query;
   try {
