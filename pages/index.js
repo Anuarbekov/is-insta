@@ -71,15 +71,13 @@ const Index = () => {
               console.log(error);
             },
             () => {
-              getDownloadURL(uploadTask.snapshot.ref).then(
-                (downloadURL) => {
-                  const data = {
-                    name: name,
-                    url: downloadURL,
-                  };
-                  axios.post(`api/add/${collection_name}`, data, headers);
-                }
-              );
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                const data = {
+                  name: name,
+                  url: downloadURL,
+                };
+                axios.post(`api/add/${collection_name}`, data, headers);
+              });
             }
           );
         });
@@ -101,7 +99,7 @@ const Index = () => {
               .writeText(
                 "https://is-insta.vercel.app/photos/" + collection_name
               )
-              .then(function () {
+              .then(
                 toast.success("URL copied to your clipboard!", {
                   position: "top-right",
                   autoClose: 2500,
@@ -110,8 +108,8 @@ const Index = () => {
                   pauseOnHover: false,
                   draggable: false,
                   progress: undefined,
-                });
-              })
+                })
+              )
               .catch(() => {
                 alert("Something gone wrong");
               })
