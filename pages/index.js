@@ -72,12 +72,12 @@ const Index = () => {
             },
             async () => {
               await getDownloadURL(uploadTask.snapshot.ref).then(
-                async (downloadURL) => {
+                (downloadURL) => {
                   const data = {
                     name: name,
                     url: downloadURL,
                   };
-                  await axios.post(`api/add/${collection_name}`, data, headers);
+                  axios.post(`api/add/${collection_name}`, data, headers);
                 }
               );
             }
