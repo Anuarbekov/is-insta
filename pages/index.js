@@ -58,7 +58,7 @@ const Index = () => {
           { resolution: resolution },
           headers
         );
-        await images.map(async (image) => {
+        images.map(async (image) => {
           initializeApp(firebaseConfig);
           const name = image.name;
           const storage = getStorage();
@@ -70,8 +70,8 @@ const Index = () => {
             (error) => {
               console.log(error);
             },
-            async () => {
-              await getDownloadURL(uploadTask.snapshot.ref).then(
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref).then(
                 (downloadURL) => {
                   const data = {
                     name: name,
