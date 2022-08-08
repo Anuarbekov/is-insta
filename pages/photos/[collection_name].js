@@ -3,7 +3,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import TinderCards from "../../components/TinderCards";
 import Head from "next/head";
-let resolution;
 const Photos = ({ response, resolution }) => {
   const [urls, setUrls] = useState([]);
   const router = useRouter();
