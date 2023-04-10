@@ -9,6 +9,7 @@ export default async function addResolution(req, res) {
       const collection = client.db("photos").collection(collection_name);
       await collection.insertOne({ resolution });
     });
+    res.status(200).send();
   } catch (err) {
     console.log(err);
   }

@@ -1,24 +1,18 @@
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import axios from "axios";
-import { firebaseConfig } from "../utils/connectFirebase";
 import { DropzoneArea } from "material-ui-dropzone";
 import Head from "next/head";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import { initializeApp } from "firebase/app";
-import Description from "../components/Description";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { GetContextSize } from "../components/ContextSize";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { v4 as uuidv4 } from "uuid";
+import { GetContextSize } from "../components/ContextSize";
+import Description from "../components/Description";
+import { firebaseConfig } from "../utils/connectFirebase";
+import Script from "next/script";
 const Index = () => {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -28,6 +22,65 @@ const Index = () => {
   const [images, setImages] = useState([]);
   const collection_name = uuidv4();
   const customId = "custom-id-yes";
+
+  const uploadImages = async () => {
+    await axios.post(
+      `api/add-resol/${collection_name}`,
+      { resolution: resolution },
+      {
+        "Content-Type": "application/json",
+      }
+    );
+    const closeToast = async () => {
+      toast.dismiss();
+    };
+    let promise = images.map((image) => {
+      initializeApp(firebaseConfig);
+      const name = image.name;
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (err) => {
+          console.log("error", err);
+          reject();
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            const data = {
+              name: name,
+              url: downloadURL,
+            };
+            axios.post(`api/add/${collection_name}`, data, {
+              "Content-Type": "application/json",
+            });
+          });
+        }
+      );
+    });
+    Promise.all(promise).then(() => {
+      console.log("UPLOADFIREBASE IS ENDED");
+      closeToast();
+      navigator.clipboard.writeText(
+        "http:/localhost:3000/photos/" + collection_name
+      );
+      toast.success("URL copied to your clipboard!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
+    });
+  };
   const handleChange = (uploadFiles) => {
     if (uploadFiles) {
       const files = [...uploadFiles];
@@ -50,37 +103,6 @@ const Index = () => {
       });
     } else {
       if (images.length >= 1) {
-        const headers = {
-          "Content-Type": "application/json",
-        };
-        axios.post(
-          `api/add-resol/${collection_name}`,
-          { resolution: resolution },
-          headers
-        );
-        images.map(async (image) => {
-          initializeApp(firebaseConfig);
-          const name = image.name;
-          const storage = getStorage();
-          const storageRef = ref(storage, `images/${name}`);
-          const uploadTask = uploadBytesResumable(storageRef, image);
-          uploadTask.on(
-            "state_changed",
-            (snapshot) => {},
-            (error) => {
-              console.log(error);
-            },
-            () => {
-              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                const data = {
-                  name: name,
-                  url: downloadURL,
-                };
-                axios.post(`api/add/${collection_name}`, data, headers);
-              });
-            }
-          );
-        });
         toast.loading("Uploading...", {
           position: "top-right",
           hideProgressBar: true,
@@ -90,31 +112,7 @@ const Index = () => {
           progress: undefined,
           toastId: customId,
         });
-        async function closeToast() {
-          toast.dismiss();
-        }
-        setTimeout(() => {
-          closeToast().then(
-            navigator.clipboard
-              .writeText(
-                "https://is-insta.vercel.app/photos/" + collection_name
-              )
-              .then(
-                toast.success("URL copied to your clipboard!", {
-                  position: "top-right",
-                  autoClose: 2500,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: false,
-                  draggable: false,
-                  progress: undefined,
-                })
-              )
-              .catch(() => {
-                alert("Something gone wrong");
-              })
-          );
-        }, 9000);
+        await uploadImages();
       } else {
         toast.warn("Upload at least one image !", {
           position: "top-right",
@@ -134,11 +132,11 @@ const Index = () => {
     <>
       <Head>
         <title>IsInsta</title>
-        <script
+        <Script
           src="https://kit.fontawesome.com/e35f419637.js"
           crossOrigin="anonymous"
           async
-        ></script>
+        />
       </Head>
       <div className="body">
         <div className="main-text">

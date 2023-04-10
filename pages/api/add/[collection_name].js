@@ -8,6 +8,7 @@ export default async function addPhotoUrl(req, res) {
       const collection = client.db("photos").collection(collection_name);
       await collection.insertOne({ name, url });
     });
+    res.status(200).send();
   } catch (err) {
     console.log(err);
   }

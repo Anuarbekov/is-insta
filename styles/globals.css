@@ -160,7 +160,6 @@ body {
     width: calc(
       270px + (540 - 270) * ((100vw - 320px) / (1200 - 320))
     ) !important;
-    height: 675px;
     height: calc(
       337.5px + (675 - 337.5) * ((100vw - 320px) / (1200 - 320))
     ) !important;
