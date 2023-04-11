@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,79 +10,68 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
-import { GetContextSize } from "../components/ContextSize";
 import Description from "../components/Description";
-import { firebaseConfig } from "../utils/connectFirebase";
-import Script from "next/script";
+
 const Index = () => {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     document.body.style.height = "100vh";
   });
-  const { resolution, handleSizeChange } = GetContextSize();
+  const [resolution, setResolution] = useState("");
+
   const [images, setImages] = useState([]);
-  const collection_name = uuidv4();
   const customId = "custom-id-yes";
 
-  const uploadImages = async () => {
-    await axios.post(
-      `api/add-resol/${collection_name}`,
-      { resolution: resolution },
-      {
-        "Content-Type": "application/json",
-      }
-    );
-    const closeToast = async () => {
-      toast.dismiss();
-    };
-    let promise = images.map((image) => {
-      initializeApp(firebaseConfig);
-      const name = image.name;
-      const storage = getStorage();
-      const storageRef = ref(storage, `images/${name}`);
-      const uploadTask = uploadBytesResumable(storageRef, image);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-        },
-        (err) => {
-          console.log("error", err);
-          reject();
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const data = {
-              name: name,
-              url: downloadURL,
-            };
-            axios.post(`api/add/${collection_name}`, data, {
-              "Content-Type": "application/json",
-            });
-          });
-        }
-      );
-    });
-    Promise.all(promise).then(() => {
-      console.log("UPLOADFIREBASE IS ENDED");
-      closeToast();
-      navigator.clipboard.writeText(
-        "http:/localhost:3000/photos/" + collection_name
-      );
-      toast.success("URL copied to your clipboard!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      });
+  const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setResolution(event.target.value);
+  };
+
+  const convertToBase64 = async (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
     });
   };
-  const handleChange = (uploadFiles) => {
+
+  const uploadImages = async () => {
+    const id = uuidv4();
+    const promiseArray = images.map((item) => {
+      return new Promise(async (resolve, reject) => {
+        return resolve(await convertToBase64(item));
+      });
+    });
+
+    Promise.all(promiseArray).then((base64Images) => {
+      axios
+        .post(`http://localhost:8080/uploads`, {
+          base64Images: base64Images,
+          id,
+          resolution: resolution,
+        })
+        .then((res) => {
+          console.log(res);
+          toast.dismiss();
+          navigator.clipboard.writeText("http://localhost:3000/photos/" + id);
+          toast.success("URL copied to your clipboard!", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+          });
+        });
+    });
+  };
+
+  const handleChange = (uploadFiles: File[]) => {
     if (uploadFiles) {
       const files = [...uploadFiles];
       files.map((file) => {
@@ -132,11 +122,6 @@ const Index = () => {
     <>
       <Head>
         <title>IsInsta</title>
-        <Script
-          src="https://kit.fontawesome.com/e35f419637.js"
-          crossOrigin="anonymous"
-          async
-        />
       </Head>
       <div className="body">
         <div className="main-text">
@@ -146,6 +131,7 @@ const Index = () => {
           <ToastContainer theme="dark" />
           <Description />
         </div>
+        {images.map((image) => image.name)}
         <div className="upload-zone">
           <DropzoneArea
             dropzoneParagraphClass="dropzone-text"
