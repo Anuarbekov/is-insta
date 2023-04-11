@@ -25,7 +25,7 @@ const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
         <h1 className="photos-text">Photos</h1>
         <a
           target="_blank"
-          href={`https://is-insta.vercel.app/results/${collection_id}`}
+          href={`http://localhost:3000/results/${collection_id}`}
           className="photos-text"
           rel="noreferrer"
         >

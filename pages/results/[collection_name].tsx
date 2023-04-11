@@ -2,11 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
-import TinderCard from "react-tinder-card";
+import dynamic from "next/dynamic";
+const TinderCard = dynamic(() => import("react-tinder-card"), {
+  ssr: false,
+});
 import Head from "next/head";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const Results = ({ response, resolution }) => {
+
+interface ResultsProps {
+  response: any;
+  resolution: string;
+}
+
+const Results: React.FC<ResultsProps> = ({ response, resolution }) => {
   const router = useRouter();
   const { collection_name } = router.query;
   const [results, setResults] = useState([]);
