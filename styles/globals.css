@@ -4,15 +4,15 @@
   padding: 0;
 }
 body {
-  overflow: auto;
   background: linear-gradient(
     180deg,
     hsla(244, 40%, 13%) 10%,
     hsla(324, 63%, 76%) 90%
   );
+  background-repeat: no-repeat;
+  height: 104vh;
 }
 .body {
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }

@@ -1155,7 +1155,7 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   "version" "18.2.0"
 
-"react-tinder-card@^1.6.2":
+"react-tinder-card@^1.4.5":
   "integrity" "sha512-jtdgINFQ4bNA7YoqnoS4Z603mYCtrRHVc+K4R6JHuUzjsRsgO7hEooCUXz++HF5WE+fkOHjkuc22w+rxUlkMJw=="
   "resolved" "https://registry.npmjs.org/react-tinder-card/-/react-tinder-card-1.6.2.tgz"
   "version" "1.6.2"

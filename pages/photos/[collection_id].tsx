@@ -12,8 +12,9 @@ interface PhotosProps {
 
 const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100vh";
+    if (resolution === "square") {
+      document.body.style.height = "100vh";
+    }
   }, [collection_id]);
   return (
     <>
