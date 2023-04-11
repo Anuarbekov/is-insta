@@ -12,9 +12,7 @@ interface PhotosProps {
 
 const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
   useEffect(() => {
-    if (resolution === "square") {
-      document.body.style.height = "100vh";
-    }
+    document.body.style.height = "104vh";
   }, [collection_id]);
   return (
     <>
@@ -46,12 +44,15 @@ export async function getServerSideProps(context: {
   query: { collection_id: string };
 }) {
   const { collection_id } = context.query;
-  const res = await axios.get(`http://localhost:8080/${collection_id}`);
-  const response: string[] = await res.data.result[0];
-  const urls: string[] = Object.values(response).filter((url: String) =>
-    url.startsWith("data")
-  );
-  const resolution: string = response["resolution"];
+  const API_HOST = process.env.API_HOST;
+  const resUrls = await axios.get(`${API_HOST}/${collection_id}`);
+  const responseUrls: string[] = await resUrls.data.result[0];
+  const resolution = responseUrls["resolution"];
+  delete responseUrls["_id"];
+  delete responseUrls["collection_id"];
+  delete responseUrls["resolution"];
+  const urls: string[] = Object.values(responseUrls);
+
   return { props: { urls, collection_id, resolution } };
 }
 export default Photos;

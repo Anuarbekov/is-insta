@@ -24,6 +24,7 @@ const TinderCards: React.FC<TinderCardsProps> = ({
     <>
       {urls.map((url: string) => (
         <TinderCard
+          key={uuidv4()}
           onSwipe={(direction) => onSwipe(direction, url)}
           preventSwipe={["up", "down"]}
           className="swipe"

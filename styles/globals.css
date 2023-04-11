@@ -3,14 +3,13 @@
   margin: 0;
   padding: 0;
 }
-body {
+html {
   background: linear-gradient(
     180deg,
     hsla(244, 40%, 13%) 10%,
     hsla(324, 63%, 76%) 90%
   );
-  background-repeat: no-repeat;
-  height: 104vh;
+  background-repeat: no-repeat
 }
 .body {
   display: flex;
@@ -209,7 +208,6 @@ body {
       18px + (22 - 18) * ((100vw - 320px) / (1200 - 320))
     ) !important;
   }
-  
 }
 @keyframes gradient {
   0% {

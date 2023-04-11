@@ -40,7 +40,7 @@ const Index = () => {
   };
 
   const uploadImages = async () => {
-    const id = uuidv4();
+    const collection_id = uuidv4();
     const promiseArray = images.map((item) => {
       return new Promise(async (resolve, reject) => {
         return resolve(await convertToBase64(item));
@@ -51,13 +51,15 @@ const Index = () => {
       axios
         .post(`http://localhost:8080/uploads`, {
           base64Images: base64Images,
-          id,
+          collection_id,
           resolution: resolution,
         })
         .then((res) => {
           console.log(res);
           toast.dismiss();
-          navigator.clipboard.writeText("http://localhost:3000/photos/" + id);
+          navigator.clipboard.writeText(
+            "http://localhost:3000/photos/" + collection_id
+          );
           toast.success("URL copied to your clipboard!", {
             position: "top-right",
             autoClose: 2500,
