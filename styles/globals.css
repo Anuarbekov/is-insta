@@ -9,7 +9,7 @@ html {
     hsla(244, 40%, 13%) 10%,
     hsla(324, 63%, 76%) 90%
   );
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
 }
 .body {
   display: flex;
