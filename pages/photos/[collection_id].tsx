@@ -1,9 +1,9 @@
-import React from "react";
+import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import axios from "axios";
-import TinderCards from "../../components/TinderCards";
-import Head from "next/head";
 import { PhotosProps } from "../../interfaces/interfaces";
+const Head = dynamic(() => import("next/head"));
+const TinderCards = dynamic(() => import("../../components/TinderCards"));
 
 const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
   useEffect(() => {

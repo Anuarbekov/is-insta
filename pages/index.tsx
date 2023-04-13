@@ -1,17 +1,16 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import axios from "axios";
+import dynamic from "next/dynamic";
+const Box = dynamic(() => import("@mui/material/Box"));
+const FormControl = dynamic(() => import("@mui/material/FormControl"));
+const MenuItem = dynamic(() => import("@mui/material/MenuItem"));
+const Select = dynamic(() => import("@mui/material/Select"));
+const Description = dynamic(() => import("../components/Description"));
+const Head = dynamic(() => import("next/head"));
 import { DropzoneArea } from "material-ui-dropzone";
-import Head from "next/head";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
-import Description from "../components/Description";
-import LazyLoad from "react-lazyload";
 import { convertToBase64 } from "../utils/utils";
 
 const Index = () => {
@@ -27,7 +26,6 @@ const Index = () => {
   const handleSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setResolution(event.target.value);
   };
-
 
   const uploadImages = async () => {
     const collection_id = uuidv4();

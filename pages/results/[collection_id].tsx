@@ -1,10 +1,16 @@
+import dynamic from "next/dynamic";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import Head from "next/head";
 import { ResultsProps } from "../../interfaces/interfaces";
-import Image from "next/image";
+import { useEffect } from "react";
+const Head = dynamic(() => import("next/head"));
 
 const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
+  useEffect(() => {
+    if (resolution === "square") {
+      document.body.style.height = "100vh";
+    }
+  }, [urls]);
   return (
     <>
       <Head>
@@ -13,9 +19,7 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
       <div className="main">
         {Object.keys(reactions).map((key) => (
           <div key={uuidv4()} className="card-reaction">
-            <Image
-              width={540}
-              height={resolution === "square" ? 540 : 675}
+            <img
               alt=""
               className={`image-slider-${
                 resolution === "square" ? "square" : "vertical"
@@ -48,7 +52,7 @@ export async function getServerSideProps(context: {
   const resReactions = await axios.get(
     `${process.env.API_HOST}/reactions/${collection_id}`
   );
-  let reactions: string[] = await resReactions.data["0"];
+  let reactions: string[] = (await resReactions.data["0"]) || [];
   try {
     delete reactions["_id"];
     delete reactions["collection_id"];
