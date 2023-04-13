@@ -1,11 +1,8 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import Head from "next/head";
-interface ResultsProps {
-  reactions: string[];
-  urls: string[];
-  resolution: string;
-}
+import { ResultsProps } from "../../interfaces/interfaces";
+import Image from "next/image";
 
 const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
   return (
@@ -13,17 +10,18 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
       <Head>
         <title>Reactions</title>
       </Head>
-
       <div className="main">
         {Object.keys(reactions).map((key) => (
           <div key={uuidv4()} className="card-reaction">
-            <img
+            <Image
+              width={540}
+              height={resolution === "square" ? 540 : 675}
               alt=""
               className={`image-slider-${
                 resolution === "square" ? "square" : "vertical"
               }`}
               src={urls[key]}
-            ></img>
+            />
             <h3 className="reaction">
               <i className="fa-solid fa-heart"></i>
               <span style={{ marginLeft: 8 }}>{reactions[key]}</span>
@@ -39,17 +37,16 @@ export async function getServerSideProps(context: {
   query: { collection_id: string };
 }) {
   const { collection_id } = context.query;
-  const API_HOST = process.env.API_HOST;
-  const resUrls = await axios.get(`${API_HOST}/${collection_id}`);
+  const resUrls = await axios.get(`${process.env.API_HOST}/${collection_id}`);
   const responseUrls: string[] = await resUrls.data.result[0];
   const resolution = responseUrls["resolution"];
-  delete responseUrls["_id"];
+  delete responseUrls["_id"]; // deleting _id, collection_id, resolution
   delete responseUrls["collection_id"];
   delete responseUrls["resolution"];
   const urls: string[] = Object.values(responseUrls);
 
   const resReactions = await axios.get(
-    `${API_HOST}/reactions/${collection_id}`
+    `${process.env.API_HOST}/reactions/${collection_id}`
   );
   let reactions: string[] = await resReactions.data["0"];
   try {

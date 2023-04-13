@@ -11,6 +11,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { v4 as uuidv4 } from "uuid";
 import Description from "../components/Description";
+import LazyLoad from "react-lazyload";
+import { convertToBase64 } from "../utils/utils";
 
 const Index = () => {
   useEffect(() => {
@@ -26,18 +28,6 @@ const Index = () => {
     setResolution(event.target.value);
   };
 
-  const convertToBase64 = async (file: File) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
 
   const uploadImages = async () => {
     const collection_id = uuidv4();

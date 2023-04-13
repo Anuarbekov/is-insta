@@ -3,12 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import TinderCards from "../../components/TinderCards";
 import Head from "next/head";
-
-interface PhotosProps {
-  urls: string[];
-  collection_id: string;
-  resolution: string;
-}
+import { PhotosProps } from "../../interfaces/interfaces";
 
 const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
   useEffect(() => {
