@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { TinderCardsProps } from "../interfaces/interfaces";
+const Image = dynamic(() => import("next/future/image"));
 const TinderCard = dynamic(() => import("react-tinder-card"), {
   ssr: false,
 });
@@ -28,7 +29,9 @@ const TinderCards: React.FC<TinderCardsProps> = ({
           preventSwipe={["up", "down"]}
           className="swipe"
         >
-          <img
+          <Image
+            width={540}
+            height={resolution === "square" ? 540 : 675}
             alt=""
             className={`image-slider-${
               resolution === "square" ? "square" : "vertical"

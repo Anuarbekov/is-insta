@@ -1,14 +1,10 @@
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import axios from "axios";
 import { PhotosProps } from "../../interfaces/interfaces";
 const Head = dynamic(() => import("next/head"));
 const TinderCards = dynamic(() => import("../../components/TinderCards"));
 
 const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
-  useEffect(() => {
-    document.body.style.height = "104vh";
-  }, [collection_id]);
   return (
     <>
       <Head>

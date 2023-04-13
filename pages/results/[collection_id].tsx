@@ -2,15 +2,9 @@ import dynamic from "next/dynamic";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { ResultsProps } from "../../interfaces/interfaces";
-import { useEffect } from "react";
 const Head = dynamic(() => import("next/head"));
-
+const Image = dynamic(() => import("next/future/image"));
 const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
-  useEffect(() => {
-    if (resolution === "square") {
-      document.body.style.height = "100vh";
-    }
-  }, [urls]);
   return (
     <>
       <Head>
@@ -19,7 +13,9 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
       <div className="main">
         {Object.keys(reactions).map((key) => (
           <div key={uuidv4()} className="card-reaction">
-            <img
+            <Image
+              width={540}
+              height={resolution === "square" ? 540 : 675}
               alt=""
               className={`image-slider-${
                 resolution === "square" ? "square" : "vertical"

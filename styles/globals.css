@@ -86,13 +86,13 @@ html {
   justify-content: center !important;
 }
 .image-slider-vertical {
-  border-radius: 10px;
+  border-radius: 20px;
   width: 540px;
   height: 675px;
   object-fit: cover;
 }
 .image-slider-square {
-  border-radius: 10px;
+  border-radius: 20px;
   width: 540px;
   height: 540px;
   object-fit: cover;
@@ -155,7 +155,7 @@ html {
     font-family: "Poppins", sans-serif !important;
   }
   .image-slider-vertical {
-    border-radius: 10px;
+    border-radius: 20px;
     width: calc(
       270px + (540 - 270) * ((100vw - 320px) / (1200 - 320))
     ) !important;
@@ -165,7 +165,7 @@ html {
     object-fit: cover;
   }
   .image-slider-square {
-    border-radius: 10px;
+    border-radius: 20px;
     width: calc(
       270px + (540 - 270) * ((100vw - 320px) / (1200 - 320))
     ) !important;
