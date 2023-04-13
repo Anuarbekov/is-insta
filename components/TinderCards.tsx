@@ -1,24 +1,32 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
+import axios from "axios";
+import Image from "next/image";
 const TinderCard = dynamic(() => import("react-tinder-card"), {
   ssr: false,
 });
 interface TinderCardsProps {
-  urls: any;
+  urls: string[];
   collection_id: string;
   resolution: string;
 }
+
 const TinderCards: React.FC<TinderCardsProps> = ({
   urls,
   collection_id,
   resolution,
 }) => {
-  const onSwipe = (direction: string, url: string) => {
+  const onSwipe = async (direction: string, url: string) => {
     const data = {
-      url_of_photo: url,
+      collection_id,
       reaction: direction === "right" ? "+" : "-",
+      index: urls.indexOf(url),
     };
+    const result = await axios.post(
+      `http://localhost:8080/uploads/reactions`,
+      data
+    );
   };
   return (
     <>
@@ -29,7 +37,8 @@ const TinderCards: React.FC<TinderCardsProps> = ({
           preventSwipe={["up", "down"]}
           className="swipe"
         >
-          <img
+          <Image
+            fill={true}
             alt=""
             className={`image-slider-${
               resolution === "square" ? "square" : "vertical"
@@ -41,5 +50,4 @@ const TinderCards: React.FC<TinderCardsProps> = ({
     </>
   );
 };
-
 export default TinderCards;

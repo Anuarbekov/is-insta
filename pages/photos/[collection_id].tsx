@@ -47,12 +47,19 @@ export async function getServerSideProps(context: {
   const API_HOST = process.env.API_HOST;
   const resUrls = await axios.get(`${API_HOST}/${collection_id}`);
   const responseUrls: string[] = await resUrls.data.result[0];
-  const resolution = responseUrls["resolution"];
-  delete responseUrls["_id"];
-  delete responseUrls["collection_id"];
-  delete responseUrls["resolution"];
-  const urls: string[] = Object.values(responseUrls);
+  let resolution: string, urls: string[];
+  try {
+    resolution = responseUrls["resolution"];
+    delete responseUrls["_id"];
+    delete responseUrls["collection_id"];
+    delete responseUrls["resolution"];
+    urls = Object.values(responseUrls);
+  } catch (e) {
+    urls = [];
+    resolution = "";
+  }
 
   return { props: { urls, collection_id, resolution } };
 }
+
 export default Photos;
