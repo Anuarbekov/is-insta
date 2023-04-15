@@ -8,9 +8,10 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
   return (
     <>
       <Head>
-        <title>Reactions</title>
+        <title>Results</title>
       </Head>
       <div className="main">
+        <h1 className="photos-text">Results</h1>
         {Object.keys(reactions).map((key) => (
           <div key={uuidv4()} className="card-reaction">
             <Image
@@ -23,9 +24,9 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
               src={urls[key]}
               quality={100}
             />
-            <h3 className="reaction">
-              <i className="fa-solid fa-heart"></i>
-              <span style={{ marginLeft: 8 }}>{reactions[key]}</span>
+            <h3 className="reaction" style={{ marginTop: 5 }}>
+              <i className="fa-solid fa-circle-check"></i>
+              <span style={{ marginLeft: 10 }}>{reactions[key]}</span>
             </h3>
           </div>
         ))}

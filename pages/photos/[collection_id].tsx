@@ -15,7 +15,7 @@ const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
         <title>Photos</title>
       </Head>
       <div className="main">
-        <h1 className="photos-text">Photos</h1>
+        <h1 className="photos-text">Your Photos</h1>
         <a
           target="_blank"
           href={`http://localhost:3000/results/${collection_id}`}
