@@ -5,7 +5,7 @@
 }
 body {
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
+  
   background: linear-gradient(
     180deg,
     hsla(244, 40%, 13%) 10%,
@@ -115,6 +115,7 @@ body {
 }
 .Toastify__toast-container {
   width: 400px !important;
+  font-family: "Poppins", sans-serif !important;
 }
 .Toastify__toast-theme--dark {
   font-size: 20px;
