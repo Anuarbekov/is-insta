@@ -3,7 +3,9 @@
   margin: 0;
   padding: 0;
 }
-html {
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
   background: linear-gradient(
     180deg,
     hsla(244, 40%, 13%) 10%,
@@ -39,7 +41,7 @@ html {
   align-items: center;
 }
 .swipe {
-  top: 10%;
+  top: 11%;
   position: absolute;
   border-radius: 10px;
 }
@@ -49,7 +51,6 @@ html {
   justify-content: flex-start;
 }
 .main-text h1 {
-  font-family: "Poppins", sans-serif;
   font-size: 32px;
   padding-left: 1.3em;
   padding-top: 0.8em;
@@ -65,7 +66,6 @@ html {
 }
 .description h4 {
   color: white;
-  font-family: "Poppins", sans-serif;
   font-size: 25px !important;
   text-align: center;
 }
@@ -102,26 +102,6 @@ html {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-}
-.url-card {
-  border-radius: 10px;
-  margin-top: 2em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  width: 42vw;
-  height: 8vh;
-  overflow: hidden;
-}
-.url-card h5 {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px !important;
-  text-align: center;
 }
 .upload-zone h4 {
   color: white;
@@ -176,7 +156,6 @@ html {
   }
   .upload-zone h4 {
     color: white;
-    font-family: "Poppins", sans-serif;
     font-size: calc(
       17px + (22 - 17) * ((100vw - 320px) / (1200 - 320))
     ) !important;
@@ -187,11 +166,6 @@ html {
       17px + (25 - 17) * ((100vw - 320px) / (1200 - 320))
     ) !important;
     margin: 0 calc(40px + (0 - 40) * ((100vw - 320px) / (1200 - 320))) !important;
-  }
-  .url-card h5 {
-    font-size: calc(
-      14px + (20 - 14) * ((100vw - 320px) / (1200 - 320))
-    ) !important;
   }
   .main-text h1 {
     font-size: calc(
