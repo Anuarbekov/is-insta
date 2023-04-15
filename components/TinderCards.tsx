@@ -18,7 +18,7 @@ const TinderCards: React.FC<TinderCardsProps> = ({
       reaction: direction === "right" ? "+" : "-",
       index: urls.indexOf(url),
     };
-    await axios.post(`http://localhost:8080/uploads/reactions`, data);
+    await axios.post(`${process.env.API_HOST}/uploads/reactions`, data);
   };
   return (
     <>

@@ -18,7 +18,7 @@ const Photos: React.FC<PhotosProps> = ({ urls, collection_id, resolution }) => {
         <h1 className="photos-text">Your Photos</h1>
         <a
           target="_blank"
-          href={`http://localhost:3000/results/${collection_id}`}
+          href={`${process.env.FRONT_HOST}/results/${collection_id}`}
           className="photos-text"
           rel="noreferrer"
         >

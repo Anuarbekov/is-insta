@@ -37,7 +37,7 @@ const Index = () => {
 
     Promise.all(promiseArray).then((base64Images) => {
       axios
-        .post(`http://localhost:8080/uploads`, {
+        .post(`${process.env.API_HOST}/uploads`, {
           base64Images: base64Images,
           collection_id,
           resolution: resolution,
@@ -46,7 +46,7 @@ const Index = () => {
           console.log(res);
           toast.dismiss();
           navigator.clipboard.writeText(
-            "http://localhost:3000/photos/" + collection_id
+            `${process.env.FRONT_HOST}/photos/` + collection_id
           );
           toast.success("URL copied to your clipboard!", {
             position: "top-right",
