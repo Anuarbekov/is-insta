@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: "",
-  experimental: {
-    images: {
-      allowFutureImage: true,
-    },
-  },
+  experimental: {},
 };
 
 module.exports = nextConfig;

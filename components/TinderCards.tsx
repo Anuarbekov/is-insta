@@ -37,6 +37,7 @@ const TinderCards: React.FC<TinderCardsProps> = ({
               resolution === "square" ? "square" : "vertical"
             }`}
             src={url}
+            quality={100}
           />
         </TinderCard>
       ))}

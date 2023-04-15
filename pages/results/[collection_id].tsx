@@ -21,6 +21,7 @@ const Results: React.FC<ResultsProps> = ({ reactions, urls, resolution }) => {
                 resolution === "square" ? "square" : "vertical"
               }`}
               src={urls[key]}
+              quality={100}
             />
             <h3 className="reaction">
               <i className="fa-solid fa-heart"></i>
